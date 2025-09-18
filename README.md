@@ -12,3 +12,5 @@ Speed plot
 2. Max speed = max{speed of all vehicles}
 3. Min speed = min{speed of all vehicles}
 4. Range speed = Max speed - Min speed
+
+After one dimensional (particle) is well written later on we can add more features including 2d tracking (bicycle model) and different steering control
