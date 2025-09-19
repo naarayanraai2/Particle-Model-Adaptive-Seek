@@ -4,13 +4,13 @@ config = {
     "risk_premium_front_kv": 0.215,
 
     "backward_ratio": 100,
-    "num_vehicles": 22,
-    "simulation_steps": 100,
-    "n_lookahead": 4,
+    "num_vehicles": 15,
+    "simulation_steps": 300,
+    "n_lookahead": 10,
 
     "radius": 36.6,
     "circumference": 230,
-    "speed_lmt": 10.26,
+    "speed_lmt": 10,
     "car_length": 4.0,
     "max_steer": 0.4,
 

@@ -8,6 +8,8 @@ import graphing
 import numpy as np
 from Methods import *
 
+#TODO: Remove irrelevant include paths
+
 class Grapher:
     def __init__(self):
         # Generate Data and Statistics
@@ -16,7 +18,7 @@ class Grapher:
         self.stats = simulation.calculate_statistics(self.simulation_step, self.positions_history, self.velocities_history)
 
     def graph_x_vs_t(self):
-        graphing.graph_x_vs_t(self.simulation_step, self.positions_history)
+        graphing.graph_x_vs_t(self.simulation_step, self.positions_history, self.velocities_history)
 
     def graph_stats(self):
         graphing.graph_stats(self.simulation_step, self.stats)
@@ -25,4 +27,5 @@ class Grapher:
 if __name__ == '__main__':
     data = []
     grapher = Grapher()
-    grapher.graph_stats()
+    # grapher.graph_stats()
+    grapher.graph_x_vs_t()

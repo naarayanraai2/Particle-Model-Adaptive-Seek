@@ -7,14 +7,17 @@ import numpy as np
 from Methods import *
 
 #TODO: Unglobalize config
-#TODO: Make dataclasses for all data
+#TODO: Make Data and Stats dataclasses so we can easily pass information
+
+#IMPORTANT: positions_history[position, car_id] is the array structure
+# velocities: 2d array
 
 acc_list = np.array(np.arange(config['min_acc'], config['max_acc'], config['acc_grid_size'])) # 41 intervals like in the paper
 dT = np.array(np.arange(0, config['n_lookahead']*config['dt']+0.01, config['dt']))
 acc_matrix = acc_list[:, None] * dT
 
 def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
-    """Adaptive Seek Algorithm"""
+    """Adaptive Seek Algorithm""" 
     car = car_list[vehicle_id]
     velocities = car.state.v + acc_matrix  # Future car velocity estimates
     estimate_state = (((car.state.x + car.state.v * dT + 0.5 * acc_matrix * dT**2) % config['circumference'])+config['circumference'])%config['circumference']  # Wrap position
@@ -80,7 +83,7 @@ def calculate_statistics(simulation_step: np.ndarray, positions_history:np.ndarr
     """Calculate important information from simulation data
     Max speed, Min speed, Average speed, range
     """
-    # Calculate statistics from each column. Turns 2d arrays into 1d arrays
+    # Calculate statistics from each column. Turns 2d arrays into 1d arrays. Axis=1 calculates across vehicles at the same point in time.
     max_speed_history = np.max(velocities_history, axis=1)
     min_speed_history = np.min(velocities_history, axis=1)
     average_speed_history = np.average(velocities_history, axis=1)
