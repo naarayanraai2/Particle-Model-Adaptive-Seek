@@ -1,12 +1,5 @@
-import random
-import matplotlib.pyplot as plt
-
-from Configuration import config
-from Vehicle import State, Vehicle
 import simulation
 import graphing
-import numpy as np
-from Methods import *
 
 #TODO: Remove irrelevant include paths
 
