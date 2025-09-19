@@ -30,5 +30,4 @@ config = {
     "acceleration_noise": 0.2865,
     "state_noise": 0.05,
     "v_evolution_noise": 0.1,
-
 }
