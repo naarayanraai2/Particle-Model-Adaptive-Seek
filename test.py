@@ -1,4 +1,5 @@
 import numpy as np
+from dataclasses import dataclass
 
 class InventoryItem:
     '''Class for keeping track of an item in inventory.'''
@@ -36,6 +37,22 @@ class InventoryItem:
             (self.name, self.unit_price, self.quantity_on_hand) == 
             (other.name, other.unit_price, other.quantity_on_hand))
     
+@dataclass
+class SimulationData:
+    '''Class for keeping track of an item in inventory.'''
+    name: str
+
+    simulation_step: np.ndarray
+    position_history: np.ndarray
+    velocity_history: np.ndarray
+
+    max_speed_history: np.ndarray
+    min_speed_history: np.ndarray
+    average_speed_history: np.ndarray
+    range_history: np.ndarray
+
 if __name__ == '__main__':
-    array = InventoryItem("Game", 60, 5)
+    array = SimulationData([], [3, 2, 1], [], [], [], [], [], [])
+    array.simulation_step.sort()
     print(array)
+    print(type(array))

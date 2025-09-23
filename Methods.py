@@ -1,7 +1,6 @@
 from Vehicle import Vehicle
 from Configuration import config
 import random
-
 import numpy as np
 
 def update_vehicle_state(car_list, num_cars, all_car_actions):

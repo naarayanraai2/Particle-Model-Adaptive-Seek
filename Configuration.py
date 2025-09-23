@@ -4,7 +4,7 @@ config = {
     "risk_premium_front_kv": 0.215,
 
     "backward_ratio": 100,
-    "num_vehicles": 5,
+    "num_vehicles": 15,
     "simulation_steps": 300,
     "n_lookahead": 10,
 

@@ -15,24 +15,36 @@ from dataclasses import dataclass
 
 @dataclass
 class SimulationData:
-    '''Class for keeping track of an item in inventory.'''
+    '''
+    Class for storing data and statistics.
+    You can add any additional information to pass to main.
+    '''
     name: str
-
     simulation_step: np.ndarray
-    position_history: np.ndarray
-    velocity_history: np.ndarray
 
-    max_speed_history: np.ndarray
-    min_speed_history: np.ndarray
-    average_speed_history: np.ndarray
-    range_history: np.ndarray
+    # 2D Arrays for multiple cars
+    position: np.ndarray
+    velocity: np.ndarray
 
-acc_list = np.array(np.arange(config['min_acc'], config['max_acc'], config['acc_grid_size'])) # 41 intervals like in the paper
-dT = np.array(np.arange(0, config['n_lookahead']*config['dt']+0.01, config['dt']))
-acc_matrix = acc_list[:, None] * dT
+    # 1D Arrays for all cars
+    max_speed: np.ndarray
+    min_speed: np.ndarray
+    average_speed: np.ndarray
+    range: np.ndarray
 
 def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
-    '''Adaptive Seek Algorithm'''
+    '''
+    Modularized Adaptive Seek Algorithm for Simulation
+    Input: 
+    Output:  
+    '''
+
+    #TODO: Modularize, figure out the input / output, have it runnable for 1 time step
+    
+    acc_list = np.array(np.arange(config['min_acc'], config['max_acc'], config['acc_grid_size'])) # 41 intervals like in the paper
+    dT = np.array(np.arange(0, config['n_lookahead']*config['dt']+0.01, config['dt']))
+    acc_matrix = acc_list[:, None] * dT
+
     car = car_list[vehicle_id]
     velocities = car.state.v + acc_matrix  # Future car velocity estimates
     estimate_state = (((car.state.x + car.state.v * dT + 0.5 * acc_matrix * dT**2) % config['circumference'])+config['circumference'])%config['circumference']  # Wrap position
@@ -49,7 +61,7 @@ def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
     return net_reward[best_action_index], optimal_acceleration
 
 def add_cars():
-    '''Initialize Vehicles'''
+    '''Initialize vehicles for simulation'''
     n_cars = config['num_vehicles']
     new_car_list = []
     init_x = 0.01
@@ -89,32 +101,16 @@ def run_simulation():
         velocities_history.append(velocities)
 
     # Convert to numpy array for easier plotting
+    velocities_history = np.array(velocities_history)
     positions_history = np.array(positions_history)  # shape: (simulation_steps, num_cars)
     simulation_step = np.array(np.arange(0, config['simulation_steps']))
 
-    return simulation_step, positions_history, velocities_history
-
-def calculate_statistics(simulation_step: np.ndarray, positions_history:np.ndarray, velocities_history:np.ndarray):
-    '''
-    Calculate important information from simulation data
-    Max speed, Min speed, Average speed, range
-    '''
-    # Calculate statistics from each column. Turns 2d arrays into 1d arrays. Axis=1 calculates across vehicles at the same point in time.
+    # Calculate statistics
     max_speed_history = np.max(velocities_history, axis=1)
     min_speed_history = np.min(velocities_history, axis=1)
     average_speed_history = np.average(velocities_history, axis=1)
-
     range_history = max_speed_history - min_speed_history
 
-    return {
-        "max_speed": max_speed_history,
-        "min_speed": min_speed_history,
-        "avg_speed": average_speed_history,
-        
-        "range": range_history
-    }
+    simulation_data = SimulationData("Simulation Data", simulation_step, positions_history, velocities_history, max_speed_history, min_speed_history, average_speed_history, range_history)
 
-
-
-
-
+    return simulation_data
