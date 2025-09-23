@@ -12,6 +12,9 @@ def graph_x_vs_t(data:simulation.SimulationData):
     plt.figure(figsize=(10, 6))
 
     # Color Map Setup
+    #TODO: Color gradient is across the velocities of each individual car, rather than across
+    # a shared velocity as a whole. For example, car 1 could go from 0 to 1 in the full spectrum of colors,
+    # and car 2 could go from 0 to 100 and have the same color scheme. 
     norm = mcolors.Normalize(vmin = np.min(data.velocity), vmax = np.max(data.velocity))
     colors = ["#0000AD", "#90EE90"]  # Dark blue to light green
     cmap = mcolors.LinearSegmentedColormap.from_list("blue_green", colors)
@@ -26,9 +29,6 @@ def graph_x_vs_t(data:simulation.SimulationData):
                 s=5,                          
                 )           
         else: # Other Car Trajectories - Velocity based color
-            #TODO: Color gradient is across the velocities of each individual car, rather than across
-            # a shared velocity as a whole. For example, car 1 could go from 0 to 1 in the full spectrum of colors,
-            # and car 2 could go from 0 to 100 and have the same color scheme. 
             plt.scatter(
                 data.simulation_step,
                 data.position[:, vid],
@@ -63,4 +63,3 @@ def graph_statistics(data:simulation.SimulationData):
     plt.legend()
     plt.tight_layout()
     plt.show()      
-

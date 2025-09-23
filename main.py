@@ -1,8 +1,6 @@
 import simulation
 import graphing
 
-#TODO: Remove irrelevant include paths
-
 class Grapher:
     def __init__(self):
         self.data = simulation.run_simulation()
