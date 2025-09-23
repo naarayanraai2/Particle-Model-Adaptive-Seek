@@ -5,6 +5,7 @@ from Configuration import config
 from Vehicle import State, Vehicle
 import numpy as np
 from Methods import *
+from dataclasses import dataclass
 
 #TODO: Unglobalize config
 #TODO: Make Data and Stats dataclasses so we can easily pass information
@@ -12,12 +13,26 @@ from Methods import *
 #IMPORTANT: positions_history[position, car_id] is the array structure
 # velocities: 2d array
 
+@dataclass
+class SimulationData:
+    '''Class for keeping track of an item in inventory.'''
+    name: str
+
+    simulation_step: np.ndarray
+    position_history: np.ndarray
+    velocity_history: np.ndarray
+
+    max_speed_history: np.ndarray
+    min_speed_history: np.ndarray
+    average_speed_history: np.ndarray
+    range_history: np.ndarray
+
 acc_list = np.array(np.arange(config['min_acc'], config['max_acc'], config['acc_grid_size'])) # 41 intervals like in the paper
 dT = np.array(np.arange(0, config['n_lookahead']*config['dt']+0.01, config['dt']))
 acc_matrix = acc_list[:, None] * dT
 
 def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
-    """Adaptive Seek Algorithm""" 
+    '''Adaptive Seek Algorithm'''
     car = car_list[vehicle_id]
     velocities = car.state.v + acc_matrix  # Future car velocity estimates
     estimate_state = (((car.state.x + car.state.v * dT + 0.5 * acc_matrix * dT**2) % config['circumference'])+config['circumference'])%config['circumference']  # Wrap position
@@ -34,7 +49,7 @@ def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
     return net_reward[best_action_index], optimal_acceleration
 
 def add_cars():
-    """Initialize Vehicles"""
+    '''Initialize Vehicles'''
     n_cars = config['num_vehicles']
     new_car_list = []
     init_x = 0.01
@@ -50,12 +65,12 @@ def add_cars():
     return new_car_list, n_cars
 
 def run_simulation():
-    """Crunch numbers to return position / speed of vehicles over time
+    '''Crunch numbers to return position / speed of vehicles over time
     
     simulation_step: array
     positions_history: 2d array
     velocities_history: 2d array
-    """
+    '''
     # Initialize the vehicles
     car_list, num_cars = add_cars()
     positions_history = []
@@ -80,9 +95,10 @@ def run_simulation():
     return simulation_step, positions_history, velocities_history
 
 def calculate_statistics(simulation_step: np.ndarray, positions_history:np.ndarray, velocities_history:np.ndarray):
-    """Calculate important information from simulation data
+    '''
+    Calculate important information from simulation data
     Max speed, Min speed, Average speed, range
-    """
+    '''
     # Calculate statistics from each column. Turns 2d arrays into 1d arrays. Axis=1 calculates across vehicles at the same point in time.
     max_speed_history = np.max(velocities_history, axis=1)
     min_speed_history = np.min(velocities_history, axis=1)
@@ -97,6 +113,8 @@ def calculate_statistics(simulation_step: np.ndarray, positions_history:np.ndarr
         
         "range": range_history
     }
+
+
 
 
 

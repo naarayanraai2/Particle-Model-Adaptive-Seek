@@ -37,7 +37,5 @@ class InventoryItem:
             (other.name, other.unit_price, other.quantity_on_hand))
     
 if __name__ == '__main__':
-    array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    array = np.array(array)
-    print(type(array))
-    print(array[2][:])
+    array = InventoryItem("Game", 60, 5)
+    print(array)

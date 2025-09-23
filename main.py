@@ -15,10 +15,9 @@ class Grapher:
 
     def graph_stats(self):
         graphing.graph_stats(self.simulation_step, self.stats)
-
-
 if __name__ == '__main__':
     data = []
     grapher = Grapher()
-    # grapher.graph_stats()
     grapher.graph_x_vs_t()
+    grapher.graph_stats()
+
