@@ -1,58 +1,34 @@
 import numpy as np
-from dataclasses import dataclass
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
-class InventoryItem:
-    '''Class for keeping track of an item in inventory.'''
-    name: str
-    unit_price: float
-    quantity_on_hand: int = 0
+fig, ax = plt.subplots()
+t = np.linspace(0, 3, 40)
+g = -9.81
+v0 = 12
+z = g * t**2 / 2 + v0 * t
 
-    def __init__(
-            self, 
-            name: str, 
-            unit_price: float,
-            quantity_on_hand: int = 0
-        ) -> None:
-        self.name = name
-        self.unit_price = unit_price
-        self.quantity_on_hand = quantity_on_hand
+v02 = 5
+z2 = g * t**2 / 2 + v02 * t
 
-    def total_cost(self) -> float:
-        return self.unit_price * self.quantity_on_hand
-    
-    def __repr__(self) -> str:
-        return (
-            'InventoryItem('
-            f'name={self.name!r}, unit_price={self.unit_price!r}, '
-            f'quantity_on_hand={self.quantity_on_hand!r})'
-        )
+scat = ax.scatter(t[0], z[0], c="b", s=5, label=f'v0 = {v0} m/s')
+line2 = ax.plot(t[0], z2[0], label=f'v0 = {v02} m/s')[0]
+ax.set(xlim=[0, 3], ylim=[-4, 10], xlabel='Time [s]', ylabel='Z [m]')
+ax.legend()
 
-    def __hash__(self) -> int:
-        return hash((self.name, self.unit_price, self.quantity_on_hand))
 
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, InventoryItem):
-            return NotImplemented
-        return (
-            (self.name, self.unit_price, self.quantity_on_hand) == 
-            (other.name, other.unit_price, other.quantity_on_hand))
-    
-@dataclass
-class SimulationData:
-    '''Class for keeping track of an item in inventory.'''
-    name: str
+def update(frame):
+    # for each frame, update the data stored on each artist.
+    x = t[:frame]
+    y = z[:frame]
+    # update the scatter plot:
+    data = np.stack([x, y]).T
+    scat.set_offsets(data)
+    # update the line plot:
+    line2.set_xdata(t[:frame])
+    line2.set_ydata(z2[:frame])
+    return (scat, line2)
 
-    simulation_step: np.ndarray
-    position_history: np.ndarray
-    velocity_history: np.ndarray
 
-    max_speed_history: np.ndarray
-    min_speed_history: np.ndarray
-    average_speed_history: np.ndarray
-    range_history: np.ndarray
-
-if __name__ == '__main__':
-    array = SimulationData([], [3, 2, 1], [], [], [], [], [], [])
-    array.simulation_step.sort()
-    print(array)
-    print(type(array))
+ani = animation.FuncAnimation(fig=fig, func=update, frames=40, interval=30)
+plt.show()

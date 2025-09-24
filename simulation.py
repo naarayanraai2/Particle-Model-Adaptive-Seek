@@ -23,6 +23,7 @@ class SimulationData:
     simulation_step: np.ndarray
 
     # 2D Arrays for multiple cars
+    # each row correspond to one car, each column corresponds to one step in time
     position: np.ndarray
     velocity: np.ndarray
 
@@ -41,9 +42,11 @@ def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
 
     #TODO: Modularize, figure out the input / output, have it runnable for 1 time step
     
+    # keep this block in or out of adaptive_seek?
     acc_list = np.array(np.arange(config['min_acc'], config['max_acc'], config['acc_grid_size'])) # 41 intervals like in the paper
     dT = np.array(np.arange(0, config['n_lookahead']*config['dt']+0.01, config['dt']))
     acc_matrix = acc_list[:, None] * dT
+    #
 
     car = car_list[vehicle_id]
     velocities = car.state.v + acc_matrix  # Future car velocity estimates

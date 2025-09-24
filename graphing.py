@@ -16,7 +16,8 @@ def graph_x_vs_t(data:simulation.SimulationData):
     # a shared velocity as a whole. For example, car 1 could go from 0 to 1 in the full spectrum of colors,
     # and car 2 could go from 0 to 100 and have the same color scheme. 
     norm = mcolors.Normalize(vmin = np.min(data.velocity), vmax = np.max(data.velocity))
-    colors = ["#0000AD", "#90EE90"]  # Dark blue to light green
+    norm = mcolors.Normalize(vmin = 0, vmax = np.max(data.velocity))
+    colors = ["#0101C36C", "#90EE90"]  # Dark blue to light green
     cmap = mcolors.LinearSegmentedColormap.from_list("blue_green", colors)
 
     #TODO: Modify SimulationData class to include num_vehicles
@@ -49,7 +50,6 @@ def graph_x_vs_t(data:simulation.SimulationData):
 #TODO: Make it so we can choose which graphs to show
 
 def graph_statistics(data:simulation.SimulationData):
-    """graph all stats"""
     plt.figure(figsize=(10, 6))
     plt.plot(data.simulation_step, data.max_speed, label=f"Max Speed")
     plt.plot(data.simulation_step, data.min_speed, label=f"Min Speed")

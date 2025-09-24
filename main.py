@@ -1,4 +1,5 @@
 import simulation
+import animate
 import graphing
 
 class Grapher:
@@ -10,10 +11,12 @@ class Grapher:
 
     def graph_statistics(self):
         graphing.graph_statistics(self.data)
+    
+    def animate(self):
+        animate.circular(self.data)
 
 if __name__ == '__main__':
     data = []
     grapher = Grapher()
     grapher.graph_x_vs_t()
-    # grapher.graph_statistics()
 
