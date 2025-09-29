@@ -7,6 +7,8 @@ import numpy as np
 from Methods import *
 from dataclasses import dataclass
 
+import adaptiveseek as adseek
+
 #TODO: Unglobalize config
 
 #FIXME: Adaptive seek velocity bug usually occurs when the car ahead of it moves backwards
