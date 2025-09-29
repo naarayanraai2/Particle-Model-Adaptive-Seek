@@ -8,15 +8,17 @@ from Methods import *
 from dataclasses import dataclass
 
 #TODO: Unglobalize config
-#TODO: Make Data and Stats dataclasses so we can easily pass information
 
-#IMPORTANT: positions_history[position, car_id] is the array structure
-# velocities: 2d array
+#FIXME: Adaptive seek velocity bug usually occurs when the car ahead of it moves backwards
+# This occurs when the cars are moving at low speeds, usually. 
+
+# IMPORTANT: positions_history[car_id, position] is the array structure
+# velocities: 2d array [car_id, velocity]
 
 @dataclass
 class SimulationData:
     '''
-    Class for storing data and statistics.
+    Class for storing data and statistics from simulation.
     You can add any additional information to pass to main.
     '''
     name: str
@@ -46,7 +48,6 @@ def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
     acc_list = np.array(np.arange(config['min_acc'], config['max_acc'], config['acc_grid_size'])) # 41 intervals like in the paper
     dT = np.array(np.arange(0, config['n_lookahead']*config['dt']+0.01, config['dt']))
     acc_matrix = acc_list[:, None] * dT
-    #
 
     car = car_list[vehicle_id]
     velocities = car.state.v + acc_matrix  # Future car velocity estimates
@@ -56,11 +57,10 @@ def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
     distance = (((front_car_future_state - estimate_state) % config['circumference'])+config['circumference'])%config['circumference']  # Correct distance
     moving_forward_reward = cal_moving_forward_reward(velocities)[:, 1]
     moving_backward_penalty = cal_moving_backward_penalty(velocities)[:, 1]    
-    collision_penalty = cal_ego_collision_penalty(distance, velocities, front_car.state.v)
+    collision_penalty = cal_ego_collision_penalty(distance , velocities, front_car.state.v)
     net_reward = moving_forward_reward - moving_backward_penalty - config['col_pen_coeff'] * collision_penalty
     best_action_index = np.argmax(net_reward)
     optimal_acceleration = acc_list[best_action_index] #previously opt_acc
-    # print(opt_acc)
     return net_reward[best_action_index], optimal_acceleration
 
 def add_cars():
@@ -69,10 +69,10 @@ def add_cars():
     new_car_list = []
     init_x = 0.01
     init_acc = 0.0
-    dist_per_car = config['circumference']/n_cars + random.uniform(-0.5, 0.5)
+    dist_per_car = config['circumference']/n_cars  + random.uniform(-0.5, 0.5)
 
     for car_id in range(n_cars): # Loop numbers for each car
-        init_v = config['init_v_mu'] + random.uniform(-2.5, 2.5)
+        init_v = config['init_v_mu']  + random.uniform(0, 2.5)
         state = State(init_x, init_v)
         car = Vehicle(car_id, state, init_acc, config['speed_lmt'], init_acc, state)
         new_car_list.append(car)
@@ -82,7 +82,7 @@ def add_cars():
 def run_simulation():
     '''Crunch numbers to return position / speed of vehicles over time
     
-    simulation_step: array
+    simulation_step: array of times
     positions_history: 2d array
     velocities_history: 2d array
     '''
@@ -114,6 +114,17 @@ def run_simulation():
     average_speed_history = np.average(velocities_history, axis=1)
     range_history = max_speed_history - min_speed_history
 
-    simulation_data = SimulationData("Simulation Data", simulation_step, positions_history, velocities_history, max_speed_history, min_speed_history, average_speed_history, range_history)
+    simulation_data = SimulationData(
+        "Simulation Data", 
+        simulation_step, 
+        positions_history, 
+        velocities_history, 
+        max_speed_history, 
+        min_speed_history, 
+        average_speed_history, 
+        range_history)
 
     return simulation_data
+
+if __name__ == "__main__":
+    data = run_simulation()

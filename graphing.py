@@ -7,6 +7,8 @@ import simulation
 import numpy as np
 from Methods import *
 
+#TODO: Make it so we can choose which graphs to show
+
 def graph_x_vs_t(data:simulation.SimulationData):
     """Plot positions of all cars over time"""
     plt.figure(figsize=(10, 6))
@@ -47,8 +49,6 @@ def graph_x_vs_t(data:simulation.SimulationData):
     plt.tight_layout()
     plt.show()
 
-#TODO: Make it so we can choose which graphs to show
-
 def graph_statistics(data:simulation.SimulationData):
     plt.figure(figsize=(10, 6))
     plt.plot(data.simulation_step, data.max_speed, label=f"Max Speed")
@@ -63,3 +63,7 @@ def graph_statistics(data:simulation.SimulationData):
     plt.legend()
     plt.tight_layout()
     plt.show()      
+
+if __name__ == "__main__":
+    data = simulation.run_simulation()
+    graph_x_vs_t(data)
