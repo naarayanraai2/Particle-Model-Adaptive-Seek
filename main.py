@@ -4,11 +4,12 @@ import graphing
 import pickle
 
 class Grapher:
+    """
+    Choose what to graph using the following functions
+
+    Optional input to load your own .pkl file using SimulationData class
+    """
     def __init__(self, data_filepath=None):
-        """
-        Optional input to load your own .pkl file using SimulationData class
-        Choose desired functions to graph stuff.
-        """
         if data_filepath:
             self.data = self.load_data(data_filepath)
         else:
@@ -35,4 +36,5 @@ if __name__ == '__main__':
     filepath = "./data.pkl"
     grapher = Grapher()
     grapher.graph_x_vs_t()
+    grapher.animate_circular()
 

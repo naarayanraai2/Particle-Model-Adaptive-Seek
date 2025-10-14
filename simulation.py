@@ -35,12 +35,8 @@ class SimulationData:
     average_speed: np.ndarray
     range: np.ndarray
 
-def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
-    '''
-    Modularized Adaptive Seek Algorithm for Simulation
-    Input: 
-    Output:  
-    '''
+def adaptive_seek(car_list, vehicle_id, simulation_step) -> tuple[float, float]:
+    '''Adaptive Seek Algorithm for Simulation '''
 
     #TODO: Modularize, figure out the input / output, have it runnable for 1 time step
     
@@ -61,7 +57,9 @@ def adaptive_seek(car_list, vehicle_id) -> tuple[float, float]:
     net_reward = moving_forward_reward - moving_backward_penalty - config['col_pen_coeff'] * collision_penalty
     best_action_index = np.argmax(net_reward)
     optimal_acceleration = acc_list[best_action_index] #previously opt_acc
+        
     return net_reward[best_action_index], optimal_acceleration
+
 
 def add_cars():
     '''Initialize vehicles for simulation'''
@@ -82,9 +80,9 @@ def add_cars():
 def run_simulation():
     '''Crunch numbers to return position / speed of vehicles over time
     
-    simulation_step: array of times
-    positions_history: 2d array
-    velocities_history: 2d array
+    simulation_step: 1d array of times
+    positions_history: 2d array: Car Number X Time Step
+    velocities_history: 2d array: Car Number X Time Step
     '''
     # Initialize the vehicles
     car_list, num_cars = add_cars()
@@ -94,9 +92,9 @@ def run_simulation():
     for simulation_step in range(config['simulation_steps']):
         all_car_actions = []
         for vid in range(num_cars):
-            util, opt_acc = adaptive_seek(car_list, vid)
+            util, opt_acc = adaptive_seek(car_list, vid, simulation_step)
             all_car_actions.append(opt_acc)
-            
+
         # update all the vehicle state based on the selected actions
         positions, velocities = update_vehicle_state(car_list, num_cars, all_car_actions)        
 

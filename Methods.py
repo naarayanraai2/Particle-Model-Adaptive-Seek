@@ -8,7 +8,7 @@ def update_vehicle_state(car_list, num_cars, all_car_actions):
     velocities = []
     for vid in range(num_cars):
         opt_acc = all_car_actions[vid]
-        acc = config['rho_alpha'] * car_list[vid].acc + (opt_acc-config['rho_alpha']*car_list[vid].opt_acc) + random.gauss(0, 0.273)
+        acc = config['rho_alpha'] * car_list[vid].acc + (opt_acc-config['rho_alpha']*car_list[vid].opt_acc) + random.gauss(0, config['acceleration_noise'])
         car_list[vid].opt_acc = opt_acc
         car_list[vid].acc = acc
         car_list[vid].state.v = car_list[vid].state.v + car_list[vid].acc * config['dt'] + np.random.randn()*config['v_evolution_noise']

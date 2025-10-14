@@ -38,7 +38,7 @@ def graph_x_vs_t(data:simulation.SimulationData):
                 c=data.velocity[:, vid],  
                 norm=norm,
                 cmap=cmap,                
-                s=5,                          
+                s=1,                          
             )
     plt.xlabel('Simulation Step')
     plt.ylabel('Position (state.x)')
