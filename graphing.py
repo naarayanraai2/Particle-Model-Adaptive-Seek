@@ -45,7 +45,6 @@ def graph_x_vs_t(data:simulation.SimulationData):
     plt.title('Car Positions Over Time')
     plt.colorbar()
     plt.grid()
-    plt.legend()
     plt.tight_layout()
     plt.show()
 

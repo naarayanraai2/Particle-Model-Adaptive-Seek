@@ -25,7 +25,8 @@ def cal_moving_forward_reward(V_ego):
     return  np.exp(- ((V_ego - config['speed_lmt'])/(config['moving_forward_ratio'] * config['speed_lmt'])) ** 2)
 
 def cal_moving_backward_penalty(V_ego):
-    return np.exp(-config['backward_ratio'] * (V_ego+config['error_offset']))
+    penalty = np.exp(-config['backward_ratio'] * (V_ego+config['error_offset']))
+    return penalty 
 
 def  cal_ego_collision_penalty(distance, Vi, Vj):
     rela_v = Vi - Vj

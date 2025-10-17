@@ -5,18 +5,19 @@ config = {
 
     "backward_ratio": 100,
     "num_vehicles": 20,
-    "simulation_steps": 2000,
-    "n_lookahead": 6,
+    "simulation_steps": 400,
+    "n_lookahead": 4,
 
+    #TODO: Define circumference in terms of radius elsewhere in the code, perhaps?
     "radius": 36.6,
     "circumference": 230,
     "speed_lmt": 5,
-    "car_length": 0.39,
+    "car_length": 4,
     "max_steer": 0.4,
 
     "dt": 0.3334,
-    "max_acc": 4,
-    "min_acc": -6,
+    "max_acc": 6,
+    "min_acc": -4,
     "acc_grid_size": 1,
 
     "speed_reward_coeff": 1,

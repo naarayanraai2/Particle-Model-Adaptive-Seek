@@ -39,8 +39,9 @@ def adaptive_seek(car_list, vehicle_id, simulation_step) -> tuple[float, float]:
     '''Adaptive Seek Algorithm for Simulation '''
 
     #TODO: Modularize, figure out the input / output, have it runnable for 1 time step
-    
-    # keep this block in or out of adaptive_seek?
+    #TODO: Move acceleration block outside of adaptive seek. 
+    # We could globalize it OR pass it through argument. Be cautious of globalizing variables though, may be a bad idea.
+    # Could also define it in the config somehow?
     acc_list = np.array(np.arange(config['min_acc'], config['max_acc'], config['acc_grid_size'])) # 41 intervals like in the paper
     dT = np.array(np.arange(0, config['n_lookahead']*config['dt']+0.01, config['dt']))
     acc_matrix = acc_list[:, None] * dT
@@ -54,6 +55,7 @@ def adaptive_seek(car_list, vehicle_id, simulation_step) -> tuple[float, float]:
     moving_forward_reward = cal_moving_forward_reward(velocities)[:, 1]
     moving_backward_penalty = cal_moving_backward_penalty(velocities)[:, 1]    
     collision_penalty = cal_ego_collision_penalty(distance , velocities, front_car.state.v)
+    #FIXME: Do we need to add speed reward / backward coeff from the config for net reward?
     net_reward = moving_forward_reward - moving_backward_penalty - config['col_pen_coeff'] * collision_penalty
     best_action_index = np.argmax(net_reward)
     optimal_acceleration = acc_list[best_action_index] #previously opt_acc

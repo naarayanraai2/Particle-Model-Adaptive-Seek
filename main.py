@@ -36,5 +36,3 @@ if __name__ == '__main__':
     filepath = "./data.pkl"
     grapher = Grapher()
     grapher.graph_x_vs_t()
-    grapher.animate_circular()
-
