@@ -6,15 +6,17 @@ import numpy as np
 def update_vehicle_state(car_list, num_cars, all_car_actions):
     positions = []
     velocities = []
+    last_car_index = len(car_list) - 1
+
     for vid in range(num_cars):
         opt_acc = all_car_actions[vid]
         acc = config['rho_alpha'] * car_list[vid].acc + (opt_acc-config['rho_alpha']*car_list[vid].opt_acc) + random.gauss(0, config['acceleration_noise'])
         car_list[vid].opt_acc = opt_acc
         car_list[vid].acc = acc
 
-        # Optional Control Over Car 0
-        if vid == 19:
-            front_car = car_list[19]
+        # Optional Control Over Last Car in List
+        if vid == last_car_index:
+            front_car = car_list[last_car_index]
             front_car.state.x = front_car.state.x
             front_car.state.v = -1.5
             front_car.state.acc = 0

@@ -5,7 +5,7 @@ config = {
 
     "backward_ratio": 100,
     "num_vehicles": 20,
-    "simulation_steps": 5400,
+    "simulation_steps": 400,
     "n_lookahead": 4,
 
     #TODO: Define circumference in terms of radius elsewhere in the code, perhaps?
