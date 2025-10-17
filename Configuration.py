@@ -1,23 +1,23 @@
 config = {
     "risk_premium_front_kc": 1,
     "risk_premium_front_rela_kv": 1,
-    "risk_premium_front_kv": 1, # 0.215,
+    "risk_premium_front_kv": 0.215,
 
     "backward_ratio": 100,
     "num_vehicles": 20,
-    "simulation_steps": 2000,
+    "simulation_steps": 500,
     "n_lookahead": 6,
 
     "radius": 36.6,
     "circumference": 230,
-    "speed_lmt": 5,
-    "car_length": 0.39,
+    "speed_lmt": 10,
+    "car_length": 4,
     "max_steer": 0.4,
 
     "dt": 0.3334,
     "max_acc": 4,
     "min_acc": -6,
-    "acc_grid_size": 1,
+    "acc_grid_size": 0.025,
 
     "speed_reward_coeff": 1,
     "backward_pen_coeff": 1,
