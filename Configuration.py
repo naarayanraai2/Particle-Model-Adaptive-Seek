@@ -5,7 +5,7 @@ config = {
 
     "backward_ratio": 100,
     "num_vehicles": 20,
-    "simulation_steps": 400,
+    "simulation_steps": 5400,
     "n_lookahead": 4,
 
     #TODO: Define circumference in terms of radius elsewhere in the code, perhaps?
@@ -18,7 +18,7 @@ config = {
     "dt": 0.3334,
     "max_acc": 6,
     "min_acc": -4,
-    "acc_grid_size": 1,
+    "acc_grid_size": 0.03,
 
     "speed_reward_coeff": 1,
     "backward_pen_coeff": 1,
@@ -28,12 +28,12 @@ config = {
     "rho_alpha": 0.7,
     "init_v_mu": 0.75,
 
-    "acceleration_noise": 0.1,
-    "state_noise": 0.05,
-    "v_evolution_noise": 0.1,
+    # "acceleration_noise": 0.1,
+    # "state_noise": 0.05,
+    # "v_evolution_noise": 0.1,
 
 
-    # "acceleration_noise": 0,
-    # "state_noise": 0,
-    # "v_evolution_noise": 0,
+    "acceleration_noise": 0,
+    "state_noise": 0,
+    "v_evolution_noise": 0,
 }

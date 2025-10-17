@@ -48,10 +48,10 @@ def adaptive_seek(car_list, vehicle_id, simulation_step) -> tuple[float, float]:
 
     car = car_list[vehicle_id]
     velocities = car.state.v + acc_matrix  # Future car velocity estimates
-    estimate_state = (((car.state.x + car.state.v * dT + 0.5 * acc_matrix * dT**2) % config['circumference'])+config['circumference'])%config['circumference']  # Wrap position
+    estimate_state = (car.state.x + car.state.v * dT + 0.5 * acc_matrix * dT**2)
     front_car = car_list[car.front_uid]
-    front_car_future_state = (((front_car.state.x + front_car.state.v * dT) % config['circumference'])+config['circumference'])%config['circumference']  # Wrap position
-    distance = (((front_car_future_state - estimate_state) % config['circumference'])+config['circumference'])%config['circumference']  # Correct distance
+    front_car_future_state = (front_car.state.x + front_car.state.v * dT)
+    distance = (front_car_future_state - estimate_state)
     moving_forward_reward = cal_moving_forward_reward(velocities)[:, 1]
     moving_backward_penalty = cal_moving_backward_penalty(velocities)[:, 1]    
     collision_penalty = cal_ego_collision_penalty(distance , velocities, front_car.state.v)
