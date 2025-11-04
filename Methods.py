@@ -22,10 +22,12 @@ def update_vehicle_state(car_list, num_cars, all_car_actions):
     return positions, velocities
 
 def cal_moving_forward_reward(V_ego):
-    return  np.exp(- ((V_ego - config['speed_lmt'])/(config['moving_forward_ratio'] * config['speed_lmt'])) ** 2)
+    moving_forward_reward = np.exp(- ((V_ego - config['speed_lmt'])/(config['moving_forward_ratio'] * config['speed_lmt'])) ** 2)
+    return  moving_forward_reward
 
 def cal_moving_backward_penalty(V_ego):
-    return np.exp(-config['backward_ratio'] * (V_ego+config['error_offset']))
+    moving_backward_penalty = np.exp(-config['backward_ratio'] * (V_ego+config['error_offset']))
+    return moving_backward_penalty
 
 def  cal_ego_collision_penalty(distance, Vi, Vj):
     rela_v = Vi - Vj
